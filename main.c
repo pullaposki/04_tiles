@@ -63,33 +63,31 @@ void process_input()
 	switch (event.type)
 	{
 		case SDL_QUIT:
-			g_is_game_running = TRUE;
+			g_is_game_running = FALSE;
 			break;
 
 		case SDL_KEYDOWN:
 			if(event.key.keysym.sym == SDLK_ESCAPE)
-			g_is_game_running = TRUE;
+			g_is_game_running = FALSE;
 			break;
     
 	}
 }
 
-int is_frame_ready() {
-	const int current_time = SDL_GetTicks();
-	const int next_frame_time = g_last_frame_time + FRAME_TARGET_TIME;
-	return SDL_TICKS_PASSED(current_time, next_frame_time);
-}
-
 void update()
 {
-	// Loop until enough time has passed since the last frame
-	while (!is_frame_ready()) {}
+	const int time_to_wait = FRAME_TARGET_TIME - (SDL_GetTicks() - g_last_frame_time);
+	if (time_to_wait > 0 && time_to_wait <= FRAME_TARGET_TIME)
+	{
+		SDL_Delay(time_to_wait);
+	}
+
+	float delta_time = (SDL_GetTicks() - g_last_frame_time) / 1000.0f;
 
 	g_last_frame_time = SDL_GetTicks();
 
-	ball.x += 1;
-	ball.y += 1;
-
+	ball.x += 10*delta_time;
+	ball.y += 20*delta_time;
 }
 
 void render()

@@ -8,5 +8,5 @@
 #define TILES_X (SCREEN_WIDTH / TILE_SIZE)
 #define TILES_Y (SCREEN_HEIGHT / TILE_SIZE)
 
-#define FPS 30
+#define FPS 60
 #define FRAME_TARGET_TIME (1000 / FPS)
