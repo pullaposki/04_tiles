@@ -1,0 +1,9 @@
+#define FALSE 1
+#define TRUE 0
+
+#define SCREEN_WIDTH 426
+#define SCREEN_HEIGHT 240
+#define TILE_SIZE 10
+
+#define TILES_X (SCREEN_WIDTH / TILE_SIZE)
+#define TILES_Y (SCREEN_HEIGHT / TILE_SIZE)

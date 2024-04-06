@@ -2,50 +2,102 @@
 #include <stdio.h>
 #include "constants.h"
 
+int is_game_running = FALSE;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 
-int initialize_window() {
-    if (SDL_Init(SDL_INIT_EVERYTHING) != 0) {
-        fprintf(stderr, "Error initializing SDL: %s\n", SDL_GetError());
-        return FAIL;
-    }
-    window = SDL_CreateWindow(
-        NULL,
-        SDL_WINDOWPOS_CENTERED,
-        SDL_WINDOWPOS_CENTERED, 
-        SCREEN_WIDTH, 
-        SCREEN_HEIGHT,
-        SDL_WINDOW_BORDERLESS);
-    {
-        fprintf(stderr, "Error creating SDL window: %s\n", SDL_GetError());
-        if (!window) return FAIL;
-    }
+int initialize_window()
+{
+	if (SDL_Init(SDL_INIT_EVERYTHING) != 0)
+	{
+		fprintf(stderr, "Error initializing SDL: %s\n", SDL_GetError());
+		return FALSE;
+	}
 
-    renderer = SDL_CreateRenderer(window, -1, 0);
-    if (!renderer) { 
-        fprintf(stderr, "Error creating SDL renderer: %s\n", SDL_GetError());
-        return FAIL; 
-    }
+	window = SDL_CreateWindow(
+		NULL,
+		SDL_WINDOWPOS_CENTERED,
+		SDL_WINDOWPOS_CENTERED,
+		SCREEN_WIDTH,
+		SCREEN_HEIGHT,
+		SDL_WINDOW_BORDERLESS);	
+	if (!window)
+	{
+		fprintf(stderr, "Error creating SDL window: %s\n", SDL_GetError());
+		return FALSE;
+	}	
 
-    return SUCCESS;
+	renderer = SDL_CreateRenderer(window, -1, 0);
+	if (!renderer)
+	{
+		fprintf(stderr, "Error creating SDL renderer: %s\n", SDL_GetError());
+		return FALSE;
+	}
+
+	return TRUE;
 }
 
-int main() {
-    // Create a 2d array to represent the tiles
-    int tiles[TILES_X][TILES_Y];
+int setup()
+{
+	// TODO: Add your setup logic here
+	return TRUE;
+}
 
-    // Initialize the tiles to 0
-    for (int x = 0; x < TILES_X; x++) {
-        for (int y = 0; y < TILES_Y; y++) {
-            tiles[x][y] = 0;
-        }
-    }
+void process_input()
+{
+	SDL_Event event;
+	SDL_PollEvent(&event);
 
-    if (initialize_window() == FAIL) return 1; // Exit if window initialization fails
+	switch (event.type)
+	{
+		case SDL_QUIT:
+			is_game_running = FALSE;
+			break;
 
-    // Create a window
-    SDL_Window* window = SDL_CreateWindow("Tiles", SDL_WINDOWPOS_UNDEFINED, SDL_WINDOWPOS_UNDEFINED, SCREEN_WIDTH, SCREEN_HEIGHT, 0);
+		case SDL_KEYDOWN:
+			if(event.key.keysym.sym == SDLK_ESCAPE)
+			is_game_running = FALSE;
+			break;
+    
+	}
+}
 
-    return 0;
+void update()
+{
+	// TODO: Add your update logic here
+}
+
+void render()
+{
+	SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
+	SDL_RenderClear(renderer);
+}
+
+void destroy_window()
+{
+	SDL_DestroyRenderer(renderer);
+	SDL_DestroyWindow(window);
+	SDL_Quit();
+}
+
+int main()
+{
+	const int is_win_init_successful = initialize_window();
+	if (is_win_init_successful == FALSE) return FALSE;
+
+	const int is_setup_successful = setup();
+	if (is_setup_successful == FALSE) return FALSE;
+
+	is_game_running = TRUE;
+
+	while (is_game_running == TRUE)
+	{
+		process_input();
+		update();
+		render();
+	}
+
+	destroy_window();
+
+	return TRUE;
 }
