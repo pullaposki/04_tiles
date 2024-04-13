@@ -33,6 +33,7 @@
     <ProjectGuid>{28327970-65b2-4146-8046-6e0912315436}</ProjectGuid>
     <RootNamespace>My04tiles</RootNamespace>
     <WindowsTargetPlatformVersion>10.0</WindowsTargetPlatformVersion>
+    <ProjectName>04_game_loop</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
